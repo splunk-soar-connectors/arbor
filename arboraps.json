@@ -54,79 +54,9 @@
       "versions": "EQ(*)"
     },
     {
-      "action": "unblacklist ip",
-      "identifier": "unblacklist_ip",
-      "description": "Un-blacklist an IP",
-      "type": "correct",
-      "read_only": false,
-      "undo": "blacklist ip",
-      "parameters": {
-        "ip": {
-          "description": "IP Address",
-          "data_type": "string",
-          "required": true,
-          "primary": true,
-          "contains": [
-            "ip"
-          ],
-          "order": 0
-        }
-      },
-      "output": [
-        {
-          "data_path": "action_result.parameter.ip",
-          "data_type": "string",
-          "contains": [
-            "ip"
-          ],
-          "column_name": "IP",
-          "column_order": 0,
-          "example_values": [
-            "1.1.1.0/24"
-          ]
-        },
-        {
-          "data_path": "action_result.status",
-          "data_type": "string",
-          "column_name": "Status",
-          "column_order": 2,
-          "example_values": [
-            "success"
-          ]
-        },
-        {
-          "data_path": "action_result.message",
-          "data_type": "string",
-          "column_name": "Message",
-          "column_order": 1,
-          "example_values": [
-            "IP un-blacklisted successfully"
-          ]
-        },
-        {
-          "data_path": "summary.total_objects",
-          "data_type": "numeric",
-          "example_values": [
-            1
-          ]
-        },
-        {
-          "data_path": "summary.total_objects_successful",
-          "data_type": "numeric",
-          "example_values": [
-            1
-          ]
-        }
-      ],
-      "render": {
-        "type": "table"
-      },
-      "versions": "EQ(*)"
-    },
-    {
-      "action": "blacklist ip",
+      "action": "block ip",
       "identifier": "blacklist_ip",
-      "description": "Blacklist an IP",
+      "description": "Add an IP to the Blacklist",
       "type": "contain",
       "read_only": false,
       "undo": "unblacklist ip",
@@ -220,12 +150,12 @@
       "versions": "EQ(*)"
     },
     {
-      "action": "unwhitelist ip",
-      "identifier": "unwhitelist_ip",
-      "description": "Un-whitelist an IP",
+      "action": "unblock ip",
+      "identifier": "unblacklist_ip",
+      "description": "Remove an IP from the Blacklist",
       "type": "correct",
       "read_only": false,
-      "undo": "whitelist ip",
+      "undo": "blacklist ip",
       "parameters": {
         "ip": {
           "description": "IP Address",
@@ -266,7 +196,173 @@
           "column_name": "Message",
           "column_order": 1,
           "example_values": [
-            "IP un-whitelisted successfully"
+            "IP un-blacklisted successfully"
+          ]
+        },
+        {
+          "data_path": "summary.total_objects",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        },
+        {
+          "data_path": "summary.total_objects_successful",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        }
+      ],
+      "render": {
+        "type": "table"
+      },
+      "versions": "EQ(*)"
+    },
+    {
+      "action": "blacklist ip",
+      "identifier": "blacklist_ip",
+      "description": "Add an IP to the Blacklist",
+      "type": "contain",
+      "read_only": false,
+      "undo": "unblacklist ip",
+      "parameters": {
+        "ip": {
+          "description": "IP Address",
+          "data_type": "string",
+          "required": true,
+          "primary": true,
+          "contains": [
+            "ip"
+          ],
+          "order": 0
+        }
+      },
+      "output": [
+        {
+          "data_path": "action_result.data.*.updatetimeISO",
+          "data_type": "string",
+          "column_name": "Update Time",
+          "column_order": 1,
+          "example_values": [
+            "2017-10-16T13:17:06Z"
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.updateTime",
+          "data_type": "numeric",
+          "example_values": [
+            1507729510
+          ]
+        },
+        {
+          "data_path": "action_result.data.*.hostAddress",
+          "data_type": "string",
+          "contains": [
+            "ip"
+          ],
+          "example_values": [
+            "1.1.1.1"
+          ]
+        },
+        {
+          "data_path": "action_result.parameter.ip",
+          "data_type": "string",
+          "contains": [
+            "ip"
+          ],
+          "column_name": "IP",
+          "column_order": 0,
+          "example_values": [
+            "1.1.1.1"
+          ]
+        },
+        {
+          "data_path": "action_result.status",
+          "data_type": "string",
+          "column_name": "Status",
+          "column_order": 3,
+          "example_values": [
+            "success"
+          ]
+        },
+        {
+          "data_path": "action_result.message",
+          "data_type": "string",
+          "column_name": "Message",
+          "column_order": 2,
+          "example_values": [
+            "IP blacklisted successfully"
+          ]
+        },
+        {
+          "data_path": "summary.total_objects",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        },
+        {
+          "data_path": "summary.total_objects_successful",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        }
+      ],
+      "render": {
+        "type": "table"
+      },
+      "versions": "EQ(*)"
+    },
+    {
+      "action": "unblacklist ip",
+      "identifier": "unblacklist_ip",
+      "description": "Remove an IP from the Blacklist",
+      "type": "correct",
+      "read_only": false,
+      "undo": "blacklist ip",
+      "parameters": {
+        "ip": {
+          "description": "IP Address",
+          "data_type": "string",
+          "required": true,
+          "primary": true,
+          "contains": [
+            "ip"
+          ],
+          "order": 0
+        }
+      },
+      "output": [
+        {
+          "data_path": "action_result.parameter.ip",
+          "data_type": "string",
+          "contains": [
+            "ip"
+          ],
+          "column_name": "IP",
+          "column_order": 0,
+          "example_values": [
+            "1.1.1.0/24"
+          ]
+        },
+        {
+          "data_path": "action_result.status",
+          "data_type": "string",
+          "column_name": "Status",
+          "column_order": 2,
+          "example_values": [
+            "success"
+          ]
+        },
+        {
+          "data_path": "action_result.message",
+          "data_type": "string",
+          "column_name": "Message",
+          "column_order": 1,
+          "example_values": [
+            "IP un-blacklisted successfully"
           ]
         },
         {
@@ -292,7 +388,7 @@
     {
       "action": "whitelist ip",
       "identifier": "whitelist_ip",
-      "description": "Whitelist an IP",
+      "description": "Add an IP to the Whitelist",
       "type": "contain",
       "read_only": false,
       "undo": "unwhitelist ip",
@@ -363,6 +459,76 @@
           "column_order": 2,
           "example_values": [
             "IP whitelisted successfully"
+          ]
+        },
+        {
+          "data_path": "summary.total_objects",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        },
+        {
+          "data_path": "summary.total_objects_successful",
+          "data_type": "numeric",
+          "example_values": [
+            1
+          ]
+        }
+      ],
+      "render": {
+        "type": "table"
+      },
+      "versions": "EQ(*)"
+    },
+    {
+      "action": "unwhitelist ip",
+      "identifier": "unwhitelist_ip",
+      "description": "Remove an IP from the Whitelist",
+      "type": "correct",
+      "read_only": false,
+      "undo": "whitelist ip",
+      "parameters": {
+        "ip": {
+          "description": "IP Address",
+          "data_type": "string",
+          "required": true,
+          "primary": true,
+          "contains": [
+            "ip"
+          ],
+          "order": 0
+        }
+      },
+      "output": [
+        {
+          "data_path": "action_result.parameter.ip",
+          "data_type": "string",
+          "contains": [
+            "ip"
+          ],
+          "column_name": "IP",
+          "column_order": 0,
+          "example_values": [
+            "1.1.1.0/24"
+          ]
+        },
+        {
+          "data_path": "action_result.status",
+          "data_type": "string",
+          "column_name": "Status",
+          "column_order": 2,
+          "example_values": [
+            "success"
+          ]
+        },
+        {
+          "data_path": "action_result.message",
+          "data_type": "string",
+          "column_name": "Message",
+          "column_order": 1,
+          "example_values": [
+            "IP un-whitelisted successfully"
           ]
         },
         {
