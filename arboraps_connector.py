@@ -434,6 +434,117 @@ class ArborApsConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_BLACKLISTED_SUCCESSFULLY)
 
+    def _handle_unwhitelist_ip(self, param):
+        """ This function is used to un-whitelist IP or CIDR.
+
+        :param param: dictionary of input parameters
+        :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Initiating login session
+        ret_val, _ = self._login(action_result)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Get required parameter
+        ip_address, net_mask = _break_ip_address(param[ARBORAPS_TA_PARAM_IP])
+        if net_mask != 32:
+            ip_address = param[ARBORAPS_TA_PARAM_IP]
+
+        # Prepare endpoint
+        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_WHITELISTED_HOSTS, ip_address)
+
+        # Get whitelisted hosts
+        ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # If IP is not present in whitelist
+        if not response:
+            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_UNWHITELISTED)
+
+        # Prepare params
+        params = {'hostAddress': ip_address}
+
+        # Delete IP from whitelist
+        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_WHITELISTED_HOSTS,
+                                                 action_result=action_result, method='delete', params=params)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_UNWHITELISTED_SUCCESSFULLY)
+
+    def _handle_whitelist_ip(self, param):
+        """ This function is used to whitelist IP or CIDR.
+
+        :param param: dictionary of input parameters
+        :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Initiating login session
+        ret_val, _ = self._login(action_result)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Get required parameter
+        ip_address, net_mask = _break_ip_address(param[ARBORAPS_TA_PARAM_IP])
+        if net_mask != 32:
+            ip_address = param[ARBORAPS_TA_PARAM_IP]
+
+        # Prepare endpoint
+        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_WHITELISTED_HOSTS, ip_address)
+
+        # Get whitelisted hosts
+        ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # If IP already present in whitelist
+        if response:
+            # Add the response into the data section
+            date_time = datetime.datetime.utcfromtimestamp(response['updateTime'])
+            response['updatetimeISO'] = date_time.isoformat() + 'Z'
+            action_result.add_data(response)
+            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_WHITELISTED)
+
+        # Prepare params
+        params = {'hostAddress': ip_address}
+
+        # Add IP in whitelist
+        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_WHITELISTED_HOSTS,
+                                                 action_result=action_result, method='post', params=params)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Add the response into the data section
+        date_time = datetime.datetime.utcfromtimestamp(response['updateTime'])
+        response['updatetimeISO'] = date_time.isoformat() + 'Z'
+        action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_WHITELISTED_SUCCESSFULLY)
+
     def handle_action(self, param):
         """ This function gets current action identifier and calls member function of its own to handle the action.
 
@@ -444,8 +555,12 @@ class ArborApsConnector(BaseConnector):
         # Dictionary mapping each action with its corresponding actions
         action_mapping = {
             'test_connectivity': self._handle_test_connectivity,
+            'block_ip': self._handle_blacklist_ip,
+            'unblock_ip': self._handle_unblacklist_ip,
             'blacklist_ip': self._handle_blacklist_ip,
-            'unblacklist_ip': self._handle_unblacklist_ip
+            'unblacklist_ip': self._handle_unblacklist_ip,
+            'whitelist_ip': self._handle_whitelist_ip,
+            'unwhitelist_ip': self._handle_unwhitelist_ip
         }
 
         action = self.get_action_identifier()
