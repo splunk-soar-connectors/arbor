@@ -13,7 +13,7 @@
   "utctime_updated": "2017-11-06T23:11:48.000000Z",
   "package_name": "phantom_arboraps",
   "main_module": "arboraps_connector.pyc",
-  "min_phantom_version": "3.0.247",
+  "min_phantom_version": "3.0.251",
   "app_wizard_version": "1.0.0",
   "configuration": {
     "server_url": {
@@ -55,7 +55,7 @@
     },
     {
       "action": "block ip",
-      "identifier": "blacklist_ip",
+      "identifier": "block_ip",
       "description": "Add an IP to the Blacklist",
       "type": "contain",
       "read_only": false,
@@ -151,7 +151,7 @@
     },
     {
       "action": "unblock ip",
-      "identifier": "unblacklist_ip",
+      "identifier": "unblock_ip",
       "description": "Remove an IP from the Blacklist",
       "type": "correct",
       "read_only": false,

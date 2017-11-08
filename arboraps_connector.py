@@ -555,6 +555,8 @@ class ArborApsConnector(BaseConnector):
         # Dictionary mapping each action with its corresponding actions
         action_mapping = {
             'test_connectivity': self._handle_test_connectivity,
+            'block_ip': self._handle_blacklist_ip,
+            'unblock_ip': self._handle_unblacklist_ip,
             'blacklist_ip': self._handle_blacklist_ip,
             'unblacklist_ip': self._handle_unblacklist_ip,
             'whitelist_ip': self._handle_whitelist_ip,
