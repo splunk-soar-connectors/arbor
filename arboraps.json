@@ -1,7 +1,7 @@
 {
   "appid": "7bf6ed96-7a88-42f3-a74a-c0a789b5ff84",
   "name": "Arbor APS",
-  "description": "This app integrates with Arbor Networks APS to execute <b>containment</b> and <b>corrective</b> actions",
+  "description": "This app integrates with Arbor Networks APS to execute containment and corrective actions",
   "type": "network security",
   "product_vendor": "Arbor Networks",
   "logo": "arboraps.png",
