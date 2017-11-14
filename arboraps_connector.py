@@ -323,6 +323,40 @@ class ArborApsConnector(BaseConnector):
         self.save_progress(ARBORAPS_TEST_CONNECTIVITY_PASS)
         return action_result.set_status(phantom.APP_SUCCESS)
 
+    def _handle_list_ips(self, param):
+        """ This function is used to un-blacklist IP or CIDR.
+
+        :param param: dictionary of input parameters
+        :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+
+        # Add an action result object to self (BaseConnector) to represent the action for this param
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        # Initiating login session
+        ret_val, _ = self._login(action_result)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        # Prepare endpoint
+        endpoint = ARBORAPS_TA_REST_BLACKLISTED_HOSTS if param['list'] == 'blacklist' else ARBORAPS_TA_REST_WHITELISTED_HOSTS
+
+        # Get IPs from requested list
+        ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
+
+        # Something went wrong
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        action_result.add_data(response)
+        action_result.update_summary({'num_ips': len(response['blacklisted-hosts'])})
+
+        return action_result.set_status(phantom.APP_SUCCESS)
+
     def _handle_unblacklist_ip(self, param):
         """ This function is used to un-blacklist IP or CIDR.
 
@@ -555,6 +589,7 @@ class ArborApsConnector(BaseConnector):
         # Dictionary mapping each action with its corresponding actions
         action_mapping = {
             'test_connectivity': self._handle_test_connectivity,
+            'list_ips': self._handle_list_ips,
             'block_ip': self._handle_blacklist_ip,
             'unblock_ip': self._handle_unblacklist_ip,
             'blacklist_ip': self._handle_blacklist_ip,
