@@ -324,7 +324,7 @@ class ArborApsConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_ips(self, param):
-        """ This function is used to un-blacklist IP or CIDR.
+        """ This function is used to list IPs on the blacklist or whitelist.
 
         :param param: dictionary of input parameters
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
