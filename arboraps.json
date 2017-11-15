@@ -56,7 +56,7 @@
         {
             "action": "list ips",
             "identifier": "list_ips",
-            "description": "List all IPs on the outbound blacklist or whitelist",
+            "description": "List all IPs on the outbound Blacklist or Whitelist",
             "type": "investigate",
             "read_only": true,
             "parameters": {
