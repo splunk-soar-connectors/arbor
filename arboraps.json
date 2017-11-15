@@ -56,7 +56,7 @@
         {
             "action": "list ips",
             "identifier": "list_ips",
-            "description": "List all IPs on the blacklist or whitelist",
+            "description": "List all IPs on the outbound Blacklist or Whitelist",
             "type": "investigate",
             "read_only": true,
             "parameters": {
@@ -144,7 +144,7 @@
         {
             "action": "block ip",
             "identifier": "block_ip",
-            "description": "Add an IP to the Blacklist",
+            "description": "Add an IP to the outbound Blacklist",
             "verbose": "This action is the same as <b>blacklist ip</b>",
             "type": "contain",
             "read_only": false,
@@ -241,7 +241,7 @@
         {
             "action": "unblock ip",
             "identifier": "unblock_ip",
-            "description": "Remove an IP from the Blacklist",
+            "description": "Remove an IP from the outbound Blacklist",
             "verbose": "This action is the same as <b>unblacklist ip</b>",
             "type": "correct",
             "read_only": false,
@@ -312,7 +312,7 @@
         {
             "action": "blacklist ip",
             "identifier": "blacklist_ip",
-            "description": "Add an IP to the Blacklist",
+            "description": "Add an IP to the outbound Blacklist",
             "verbose": "This action is the same as <b>block ip</b>",
             "type": "contain",
             "read_only": false,
@@ -409,7 +409,7 @@
         {
             "action": "unblacklist ip",
             "identifier": "unblacklist_ip",
-            "description": "Remove an IP from the Blacklist",
+            "description": "Remove an IP from the outbound Blacklist",
             "verbose": "This action is the same as <b>unblock ip</b>",
             "type": "correct",
             "read_only": false,
@@ -480,7 +480,7 @@
         {
             "action": "whitelist ip",
             "identifier": "whitelist_ip",
-            "description": "Add an IP to the Whitelist",
+            "description": "Add an IP to the outbound Whitelist",
             "type": "contain",
             "read_only": false,
             "undo": "unwhitelist ip",
@@ -576,7 +576,7 @@
         {
             "action": "unwhitelist ip",
             "identifier": "unwhitelist_ip",
-            "description": "Remove an IP from the Whitelist",
+            "description": "Remove an IP from the outbound Whitelist",
             "type": "correct",
             "read_only": false,
             "undo": "whitelist ip",
