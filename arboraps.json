@@ -9,7 +9,7 @@
     "product_name": "Arbor Networks APS",
     "product_version_regex": ".*",
     "publisher": "Phantom",
-    "license": "Copyright phantom 2017",
+    "license": "Copyright (c) Phantom Cyber Corporation, 2017-2018",
     "app_version": "1.0.9",
     "utctime_updated": "2017-12-21T22:41:33.000000Z",
     "package_name": "phantom_arboraps",
