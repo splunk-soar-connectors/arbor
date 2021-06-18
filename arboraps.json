@@ -311,12 +311,12 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "whitelist ip",
-            "identifier": "whitelist_ip",
+            "action": "allow ip",
+            "identifier": "wallow_ip",
             "description": "Add an IP to the outbound Whitelist",
             "type": "contain",
             "read_only": false,
-            "undo": "unwhitelist ip",
+            "undo": "unallow ip",
             "parameters": {
                 "ip": {
                     "description": "IP Address",
@@ -407,12 +407,12 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "unwhitelist ip",
-            "identifier": "unwhitelist_ip",
+            "action": "unallow ip",
+            "identifier": "unallow_ip",
             "description": "Remove an IP from the outbound Whitelist",
             "type": "correct",
             "read_only": false,
-            "undo": "whitelist ip",
+            "undo": "allow ip",
             "parameters": {
                 "ip": {
                     "description": "IP Address",
