@@ -104,7 +104,7 @@ class ArborApsConnector(BaseConnector):
             return False
 
         # Check if net mask is out of range
-        if net_mask not in range(0, 33):
+        if net_mask not in list(range(0, 33)):
             self.debug_print(ARBORAPS_INVALID_IP)
             return False
 
@@ -144,7 +144,7 @@ class ArborApsConnector(BaseConnector):
         except:
             error_text = "Cannot parse error details"
 
-        message = u"Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
+        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
 
         message = message.replace('{', '{{').replace('}', '}}')
 
@@ -602,7 +602,7 @@ class ArborApsConnector(BaseConnector):
         action = self.get_action_identifier()
         action_execution_status = phantom.APP_SUCCESS
 
-        if action in action_mapping.keys():
+        if action in list(action_mapping.keys()):
             action_function = action_mapping[action]
             action_execution_status = action_function(param)
 
@@ -627,7 +627,7 @@ if __name__ == '__main__':
     pudb.set_trace()
 
     if (len(sys.argv) < 2):
-        print "No test json specified as input"
+        print("No test json specified as input")
         exit(0)
 
     with open(sys.argv[1]) as f:
@@ -638,6 +638,6 @@ if __name__ == '__main__':
         connector = ArborApsConnector()
         connector.print_progress_message = True
         r_val = connector._handle_action(json.dumps(in_json), None)
-        print (json.dumps(json.loads(r_val), indent=4))
+        print(json.dumps(json.loads(r_val), indent=4))
 
     exit(0)
