@@ -595,8 +595,6 @@ class ArborApsConnector(BaseConnector):
             'list_ips': self._handle_list_ips,
             'block_ip': self._handle_blacklist_ip,
             'unblock_ip': self._handle_unblacklist_ip,
-            'blacklist_ip': self._handle_blacklist_ip,
-            'unblacklist_ip': self._handle_unblacklist_ip,
             'whitelist_ip': self._handle_whitelist_ip,
             'unwhitelist_ip': self._handle_unwhitelist_ip
         }
