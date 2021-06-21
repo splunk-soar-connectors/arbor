@@ -86,10 +86,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.data.*.hosts.*.updateTime",
-                    "data_type": "numeric",
+                    "data_path": "action_result.parameter.list",
+                    "data_type": "string",
                     "example_values": [
-                        1510622722
+                        "blacklist"
                     ]
                 },
                 {
@@ -105,17 +105,10 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.message",
-                    "data_type": "string",
+                    "data_path": "action_result.data.*.hosts.*.updateTime",
+                    "data_type": "numeric",
                     "example_values": [
-                        "Num ips: 2"
-                    ]
-                },
-                {
-                    "data_path": "action_result.parameter.list",
-                    "data_type": "string",
-                    "example_values": [
-                        "blacklist"
+                        1510622722
                     ]
                 },
                 {
@@ -123,6 +116,13 @@
                     "data_type": "numeric",
                     "example_values": [
                         2
+                    ]
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Num ips: 2"
                     ]
                 },
                 {
@@ -167,29 +167,13 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.updatetimeISO",
+                    "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Update Time",
-                    "column_order": 1,
+                    "column_name": "Status",
+                    "column_order": 3,
                     "example_values": [
-                        "2017-10-16T13:17:06Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.updateTime",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1507729510
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.hostAddress",
-                    "data_type": "string",
-                    "contains": [
-                        "ip"
-                    ],
-                    "example_values": [
-                        "1.1.1.1"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -205,14 +189,34 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.data.*.hostAddress",
                     "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 3,
+                    "contains": [
+                        "ip"
+                    ],
                     "example_values": [
-                        "success",
-                        "failed"
+                        "1.1.1.1"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.updateTime",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1507729510
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.updatetimeISO",
+                    "data_type": "string",
+                    "column_name": "Update Time",
+                    "column_order": 1,
+                    "example_values": [
+                        "2017-10-16T13:17:06Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.message",
@@ -265,6 +269,16 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 2,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.ip",
                     "data_type": "string",
                     "contains": [
@@ -277,14 +291,12 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 2,
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.message",
@@ -336,29 +348,13 @@
             },
             "output": [
                 {
-                    "data_path": "action_result.data.*.updatetimeISO",
+                    "data_path": "action_result.status",
                     "data_type": "string",
-                    "column_name": "Update Time",
-                    "column_order": 1,
+                    "column_name": "Status",
+                    "column_order": 3,
                     "example_values": [
-                        "2017-10-16T13:17:06Z"
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.updateTime",
-                    "data_type": "numeric",
-                    "example_values": [
-                        1507729510
-                    ]
-                },
-                {
-                    "data_path": "action_result.data.*.hostAddress",
-                    "data_type": "string",
-                    "contains": [
-                        "ip"
-                    ],
-                    "example_values": [
-                        "1.1.1.1"
+                        "success",
+                        "failed"
                     ]
                 },
                 {
@@ -374,14 +370,38 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.hostAddress",
                     "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 3,
+                    "contains": [
+                        "ip"
+                    ],
                     "example_values": [
-                        "success",
-                        "failed"
+                        "1.1.1.1"
                     ]
+                },
+                {
+                    "data_path": "action_result.data.*.updateTime",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1507729510
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.updatetimeISO",
+                    "data_type": "string",
+                    "column_name": "Update Time",
+                    "column_order": 1,
+                    "example_values": [
+                        "2017-10-16T13:17:06Z"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.message",
@@ -433,6 +453,16 @@
             },
             "output": [
                 {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "Status",
+                    "column_order": 2,
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
                     "data_path": "action_result.parameter.ip",
                     "data_type": "string",
                     "contains": [
@@ -445,14 +475,12 @@
                     ]
                 },
                 {
-                    "data_path": "action_result.status",
-                    "data_type": "string",
-                    "column_name": "Status",
-                    "column_order": 2,
-                    "example_values": [
-                        "success",
-                        "failed"
-                    ]
+                    "data_path": "action_result.data",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.message",
