@@ -344,7 +344,7 @@ class ArborApsConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        ips = response.pop('{0}ed-hosts'.format(param['list']))
+        ips = response.pop('{0}ed-hosts'.format('blacklist' if param['list'] == 'blocklist' else 'whitelist'))
         response['hosts'] = ips
 
         action_result.add_data(response)
