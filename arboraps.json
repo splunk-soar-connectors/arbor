@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "min_phantom_version": "4.9.39220",
     "latest_tested_versions": [
-        "Arbor APS API v1 06/20/2021"
+        "on-prem, ArbOS 5.3.6.2 system files, Arbor Networks APS 5.11.0"
     ],
     "python_version": "3",
     "publisher": "Splunk",
@@ -328,7 +328,7 @@
         {
             "action": "allow ip",
             "identifier": "allow_ip",
-            "description": "Add an IP to the outbound allowlist",
+            "description": "Add an IP to the outbound Allowlist",
             "type": "contain",
             "read_only": false,
             "undo": "unallow ip",
@@ -433,7 +433,7 @@
         {
             "action": "unallow ip",
             "identifier": "unallow_ip",
-            "description": "Remove an IP from the outbound allowlist",
+            "description": "Remove an IP from the outbound Allowlist",
             "type": "correct",
             "read_only": false,
             "undo": "allow ip",
