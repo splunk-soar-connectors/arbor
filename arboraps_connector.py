@@ -1,16 +1,8 @@
-# --
 # File: arboraps_connector.py
+# Copyright (c) 2017-2021 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2017-2018
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber Corporation.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 # Standard library imports
 import json
@@ -104,7 +96,7 @@ class ArborApsConnector(BaseConnector):
             return False
 
         # Check if net mask is out of range
-        if net_mask not in range(0, 33):
+        if net_mask not in list(range(0, 33)):
             self.debug_print(ARBORAPS_INVALID_IP)
             return False
 
@@ -144,7 +136,7 @@ class ArborApsConnector(BaseConnector):
         except:
             error_text = "Cannot parse error details"
 
-        message = u"Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
+        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
 
         message = message.replace('{', '{{').replace('}', '}}')
 
@@ -324,7 +316,7 @@ class ArborApsConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS)
 
     def _handle_list_ips(self, param):
-        """ This function is used to list IPs on the blacklist or whitelist.
+        """ This function is used to list IPs on the blocklist or allowlist.
 
         :param param: dictionary of input parameters
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
@@ -343,7 +335,7 @@ class ArborApsConnector(BaseConnector):
             return action_result.get_status()
 
         # Prepare endpoint
-        endpoint = ARBORAPS_TA_REST_BLACKLISTED_HOSTS if param['list'] == 'blacklist' else ARBORAPS_TA_REST_WHITELISTED_HOSTS
+        endpoint = ARBORAPS_TA_REST_BLOCKLISTED_HOSTS if param['list'] == 'blocklist' else ARBORAPS_TA_REST_ALLOWLISTED_HOSTS
 
         # Get IPs from requested list
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
@@ -352,7 +344,7 @@ class ArborApsConnector(BaseConnector):
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        ips = response.pop('{0}ed-hosts'.format(param['list']))
+        ips = response.pop('{0}ed-hosts'.format('blacklist' if param['list'] == 'blocklist' else 'whitelist'))
         response['hosts'] = ips
 
         action_result.add_data(response)
@@ -360,8 +352,8 @@ class ArborApsConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS)
 
-    def _handle_unblacklist_ip(self, param):
-        """ This function is used to un-blacklist IP or CIDR.
+    def _handle_unblocklist_ip(self, param):
+        """ This function is used to un-blocklist IP or CIDR.
 
         :param param: dictionary of input parameters
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
@@ -385,34 +377,34 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_BLACKLISTED_HOSTS, ip_address)
+        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_BLOCKLISTED_HOSTS, ip_address)
 
-        # Get blacklisted hosts
+        # Get blocklisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
 
         # Something went wrong
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        # If IP is not present in blacklist
+        # If IP is not present in blocklist
         if not response:
-            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_UNBLACKLISTED)
+            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_UNBLOCKLISTED)
 
         # Prepare params
         params = {'hostAddress': ip_address}
 
-        # Delete IP from blacklist
-        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_BLACKLISTED_HOSTS,
+        # Delete IP from blocklist
+        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_BLOCKLISTED_HOSTS,
                                                  action_result=action_result, method='delete', params=params)
 
         # Something went wrong
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_UNBLACKLISTED_SUCCESSFULLY)
+        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_UNBLOCKLISTED_SUCCESSFULLY)
 
-    def _handle_blacklist_ip(self, param):
-        """ This function is used to blacklist IP or CIDR.
+    def _handle_blocklist_ip(self, param):
+        """ This function is used to blocklist IP or CIDR.
 
         :param param: dictionary of input parameters
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
@@ -436,28 +428,28 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_BLACKLISTED_HOSTS, ip_address)
+        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_BLOCKLISTED_HOSTS, ip_address)
 
-        # Get blacklisted hosts
+        # Get blocklisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
 
         # Something went wrong
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        # If IP already present in blacklist
+        # If IP already present in blocklist
         if response:
             # Add the response into the data section
             date_time = datetime.datetime.utcfromtimestamp(response['updateTime'])
             response['updatetimeISO'] = date_time.isoformat() + 'Z'
             action_result.add_data(response)
-            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_BLACKLISTED)
+            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_BLOCKLISTED)
 
         # Prepare params
         params = {'hostAddress': ip_address}
 
-        # Add IP in blacklist
-        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_BLACKLISTED_HOSTS,
+        # Add IP in blocklist
+        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_BLOCKLISTED_HOSTS,
                                                  action_result=action_result, method='post', params=params)
 
         # Something went wrong
@@ -469,10 +461,10 @@ class ArborApsConnector(BaseConnector):
         response['updatetimeISO'] = date_time.isoformat() + 'Z'
         action_result.add_data(response)
 
-        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_BLACKLISTED_SUCCESSFULLY)
+        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_BLOCKLISTED_SUCCESSFULLY)
 
-    def _handle_unwhitelist_ip(self, param):
-        """ This function is used to un-whitelist IP or CIDR.
+    def _handle_unallowlist_ip(self, param):
+        """ This function is used to un-allowlist IP or CIDR.
 
         :param param: dictionary of input parameters
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
@@ -496,34 +488,34 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_WHITELISTED_HOSTS, ip_address)
+        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_ALLOWLISTED_HOSTS, ip_address)
 
-        # Get whitelisted hosts
+        # Get allowlisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
 
         # Something went wrong
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        # If IP is not present in whitelist
+        # If IP is not present in allowlist
         if not response:
-            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_UNWHITELISTED)
+            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_UNALLOWLISTED)
 
         # Prepare params
         params = {'hostAddress': ip_address}
 
-        # Delete IP from whitelist
-        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_WHITELISTED_HOSTS,
+        # Delete IP from allowlist
+        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_ALLOWLISTED_HOSTS,
                                                  action_result=action_result, method='delete', params=params)
 
         # Something went wrong
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_UNWHITELISTED_SUCCESSFULLY)
+        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_UNALLOWLISTED_SUCCESSFULLY)
 
-    def _handle_whitelist_ip(self, param):
-        """ This function is used to whitelist IP or CIDR.
+    def _handle_allowlist_ip(self, param):
+        """ This function is used to allowlist IP or CIDR.
 
         :param param: dictionary of input parameters
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
@@ -547,28 +539,28 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_WHITELISTED_HOSTS, ip_address)
+        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_ALLOWLISTED_HOSTS, ip_address)
 
-        # Get whitelisted hosts
+        # Get allowlisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
 
         # Something went wrong
         if phantom.is_fail(ret_val):
             return action_result.get_status()
 
-        # If IP already present in whitelist
+        # If IP already present in allowlist
         if response:
             # Add the response into the data section
             date_time = datetime.datetime.utcfromtimestamp(response['updateTime'])
             response['updatetimeISO'] = date_time.isoformat() + 'Z'
             action_result.add_data(response)
-            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_WHITELISTED)
+            return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALREADY_ALLOWLISTED)
 
         # Prepare params
         params = {'hostAddress': ip_address}
 
-        # Add IP in whitelist
-        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_WHITELISTED_HOSTS,
+        # Add IP in allowlist
+        ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_ALLOWLISTED_HOSTS,
                                                  action_result=action_result, method='post', params=params)
 
         # Something went wrong
@@ -580,7 +572,7 @@ class ArborApsConnector(BaseConnector):
         response['updatetimeISO'] = date_time.isoformat() + 'Z'
         action_result.add_data(response)
 
-        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_WHITELISTED_SUCCESSFULLY)
+        return action_result.set_status(phantom.APP_SUCCESS, ARBORAPS_ALLOWLISTED_SUCCESSFULLY)
 
     def handle_action(self, param):
         """ This function gets current action identifier and calls member function of its own to handle the action.
@@ -593,18 +585,16 @@ class ArborApsConnector(BaseConnector):
         action_mapping = {
             'test_connectivity': self._handle_test_connectivity,
             'list_ips': self._handle_list_ips,
-            'block_ip': self._handle_blacklist_ip,
-            'unblock_ip': self._handle_unblacklist_ip,
-            'blacklist_ip': self._handle_blacklist_ip,
-            'unblacklist_ip': self._handle_unblacklist_ip,
-            'whitelist_ip': self._handle_whitelist_ip,
-            'unwhitelist_ip': self._handle_unwhitelist_ip
+            'block_ip': self._handle_blocklist_ip,
+            'unblock_ip': self._handle_unblocklist_ip,
+            'allow_ip': self._handle_allowlist_ip,
+            'unallow_ip': self._handle_unallowlist_ip
         }
 
         action = self.get_action_identifier()
         action_execution_status = phantom.APP_SUCCESS
 
-        if action in action_mapping.keys():
+        if action in list(action_mapping.keys()):
             action_function = action_mapping[action]
             action_execution_status = action_function(param)
 
@@ -629,7 +619,7 @@ if __name__ == '__main__':
     pudb.set_trace()
 
     if (len(sys.argv) < 2):
-        print "No test json specified as input"
+        print("No test json specified as input")
         exit(0)
 
     with open(sys.argv[1]) as f:
@@ -640,6 +630,6 @@ if __name__ == '__main__':
         connector = ArborApsConnector()
         connector.print_progress_message = True
         r_val = connector._handle_action(json.dumps(in_json), None)
-        print (json.dumps(json.loads(r_val), indent=4))
+        print(json.dumps(json.loads(r_val), indent=4))
 
     exit(0)
