@@ -15,15 +15,15 @@
 #
 #
 # Standard library imports
-import json
 import datetime
-import requests
-from bs4 import BeautifulSoup
+import json
 
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
+import requests
+from bs4 import BeautifulSoup
 from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
 
 # Local imports
 from arboraps_consts import *
@@ -625,6 +625,7 @@ class ArborApsConnector(BaseConnector):
 if __name__ == '__main__':
 
     import sys
+
     import pudb
     pudb.set_trace()
 
