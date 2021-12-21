@@ -2,7 +2,7 @@
 # Arbor APS
 
 Publisher: Splunk  
-Connector Version: 2\.0\.4  
+Connector Version: 2\.0\.7  
 Product Vendor: Arbor Networks  
 Product Name: Arbor Networks APS  
 Product Version Supported (regex): "\.\*"  
