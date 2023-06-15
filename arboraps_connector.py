@@ -1,6 +1,6 @@
 # File: arboraps_connector.py
 #
-# Copyright (c) 2017-2021 Splunk Inc.
+# Copyright (c) 2017-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ def _break_ip_address(cidr_ip_address):
     :return: IP, prefix_size
     """
 
-    if "/" in cidr_ip_address:
-        ip_address, prefix_size = cidr_ip_address.split("/")
+    if '/' in cidr_ip_address:
+        ip_address, prefix_size = cidr_ip_address.split('/')
     else:
         ip_address = cidr_ip_address
         prefix_size = 0
@@ -77,7 +77,7 @@ class ArborApsConnector(BaseConnector):
         config = self.get_config()
 
         # Access values in asset config by the name
-        self._server_url = config[ARBORAPS_TA_CONFIG_SERVER_URL].strip("/")
+        self._server_url = config[ARBORAPS_TA_CONFIG_SERVER_URL].strip('/')
         self._username = config[ARBORAPS_TA_CONFIG_USERNAME]
         self._password = config[ARBORAPS_TA_CONFIG_PASSWORD]
         self._verify_server_cert = config.get(ARBORAPS_TA_CONFIG_VERIFY_SSL, False)
@@ -124,7 +124,7 @@ class ArborApsConnector(BaseConnector):
             return RetVal(phantom.APP_SUCCESS, {})
 
         return RetVal(action_result.set_status(
-            phantom.APP_ERROR, "Empty response and no information in the header"), None)
+            phantom.APP_ERROR, 'Empty response and no information in the header'), None)
 
     def _process_html_response(self, response, action_result):
         """ This function is used to process html response.
@@ -138,15 +138,15 @@ class ArborApsConnector(BaseConnector):
         status_code = response.status_code
 
         try:
-            soup = BeautifulSoup(response.text, "html.parser")
+            soup = BeautifulSoup(response.text, 'html.parser')
             error_text = soup.text
             split_lines = error_text.split('\n')
             split_lines = [x.strip() for x in split_lines if x.strip()]
             error_text = '\n'.join(split_lines)
         except:
-            error_text = "Cannot parse error details"
+            error_text = 'Cannot parse error details'
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
+        message = 'Status Code: {0}. Data from server:\n{1}\n'.format(status_code, error_text)
 
         message = message.replace('{', '{{').replace('}', '}}')
 
@@ -165,18 +165,18 @@ class ArborApsConnector(BaseConnector):
             resp_json = response.json()
         except Exception as e:
             return RetVal(action_result.set_status(
-                phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}".format(str(e))), None)
+                phantom.APP_ERROR, 'Unable to parse JSON response. Error: {0}'.format(str(e))), None)
 
         if 200 <= response.status_code < 399:
             return RetVal(phantom.APP_SUCCESS, resp_json)
 
         # Process the error returned in the json
-        message = "Error from server. Status Code: {0} Data from server: {1}".format(
+        message = 'Error from server. Status Code: {0} Data from server: {1}'.format(
             response.status_code, response.text.replace('{', '{{').replace('}', '}}'))
 
         if isinstance(resp_json, dict):
             for item in resp_json.get('errors'):
-                message = "Error from server. Status Code: {0} Data from server: {1}".format(
+                message = 'Error from server. Status Code: {0} Data from server: {1}'.format(
                     response.status_code, item.get('message'))
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
@@ -218,7 +218,7 @@ class ArborApsConnector(BaseConnector):
 
         return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
 
-    def _make_rest_call(self, endpoint, action_result, params=None, data=None, method="get"):
+    def _make_rest_call(self, endpoint, action_result, params=None, data=None, method='get'):
         """ Function that makes the REST call to the device. It's a generic function that can be called from various
         action handlers.
 
@@ -236,25 +236,25 @@ class ArborApsConnector(BaseConnector):
         try:
             request_func = getattr(self._session, method)
         except AttributeError:
-            return RetVal(action_result.set_status(phantom.APP_ERROR, "Invalid method: {0}".format(method)), resp_json)
+            return RetVal(action_result.set_status(phantom.APP_ERROR, 'Invalid method: {0}'.format(method)), resp_json)
 
         try:
-            r = request_func("{0}{1}".format(self._server_url, endpoint),
+            r = request_func('{0}{1}'.format(self._server_url, endpoint),
                              verify=self._verify_server_cert,
                              data=data,
                              params=params)
         except Exception as e:
             return RetVal(action_result.set_status(
-                phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(e))), resp_json)
+                phantom.APP_ERROR, 'Error Connecting to server. Details: {0}'.format(str(e))), resp_json)
 
         # In case of login, check for successful login
         if endpoint == ARBORAPS_TA_REST_LOGIN:
             _, _ = self._process_response(r, action_result)
             if r.status_code == 200:
                 # In case of invalid credential
-                if "Username\nPassword\nLog In\n" in action_result.get_message():
+                if 'Username\nPassword\nLog In\n' in action_result.get_message():
                     return RetVal(action_result.set_status(
-                        phantom.APP_ERROR, "Error Connecting to server. Details: Invalid Credentials"), resp_json)
+                        phantom.APP_ERROR, 'Error Connecting to server. Details: Invalid Credentials'), resp_json)
 
                 # Return success
                 return RetVal(phantom.APP_SUCCESS, resp_json)
@@ -318,7 +318,7 @@ class ArborApsConnector(BaseConnector):
 
         # Something went wrong
         if phantom.is_fail(ret_val):
-            self.save_progress("{0}".format(ARBORAPS_TEST_CONNECTIVITY_FAIL))
+            self.save_progress('{0}'.format(ARBORAPS_TEST_CONNECTIVITY_FAIL))
             return action_result.get_status()
 
         # Return success
@@ -332,7 +332,7 @@ class ArborApsConnector(BaseConnector):
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -355,6 +355,7 @@ class ArborApsConnector(BaseConnector):
             return action_result.get_status()
 
         ips = response.pop('{0}ed-hosts'.format('blacklist' if param['list'] == 'blocklist' else 'whitelist'))
+        self.save_progress('ips: {0}'.format(ips))
         response['hosts'] = ips
 
         action_result.add_data(response)
@@ -369,7 +370,7 @@ class ArborApsConnector(BaseConnector):
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -387,7 +388,8 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_BLOCKLISTED_HOSTS, ip_address)
+        endpoint = '{0}{1}/'.format(ARBORAPS_TA_REST_BLOCKLISTED_HOSTS, ip_address)
+        self.save_progress('endpoint: {0}'.format(endpoint))
 
         # Get blocklisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
@@ -420,7 +422,7 @@ class ArborApsConnector(BaseConnector):
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -438,7 +440,8 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_BLOCKLISTED_HOSTS, ip_address)
+        endpoint = '{0}{1}/'.format(ARBORAPS_TA_REST_BLOCKLISTED_HOSTS, ip_address)
+        self.save_progress('endpoint: {0}'.format(endpoint))
 
         # Get blocklisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
@@ -480,7 +483,7 @@ class ArborApsConnector(BaseConnector):
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -498,7 +501,8 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_ALLOWLISTED_HOSTS, ip_address)
+        endpoint = '{0}{1}/'.format(ARBORAPS_TA_REST_ALLOWLISTED_HOSTS, ip_address)
+        self.save_progress('endpoint: {0}'.format(endpoint))
 
         # Get allowlisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
@@ -531,7 +535,7 @@ class ArborApsConnector(BaseConnector):
         :return: status phantom.APP_SUCCESS/phantom.APP_ERROR (along with appropriate message)
         """
 
-        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        self.save_progress('In action handler for: {0}'.format(self.get_action_identifier()))
 
         # Add an action result object to self (BaseConnector) to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
@@ -549,7 +553,8 @@ class ArborApsConnector(BaseConnector):
             ip_address = param[ARBORAPS_TA_PARAM_IP]
 
         # Prepare endpoint
-        endpoint = "{0}{1}/".format(ARBORAPS_TA_REST_ALLOWLISTED_HOSTS, ip_address)
+        endpoint = '{0}{1}/'.format(ARBORAPS_TA_REST_ALLOWLISTED_HOSTS, ip_address)
+        self.save_progress('endpoint: {0}'.format(endpoint))
 
         # Get allowlisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
@@ -630,7 +635,7 @@ if __name__ == '__main__':
     pudb.set_trace()
 
     if (len(sys.argv) < 2):
-        print("No test json specified as input")
+        print('No test json specified as input')
         exit(0)
 
     with open(sys.argv[1]) as f:
