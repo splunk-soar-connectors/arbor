@@ -349,7 +349,6 @@ class ArborApsConnector(BaseConnector):
 
         # Get IPs from requested list
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
-        self.debug_print('respone: {0}'.format(response))
 
         # Something went wrong
         if phantom.is_fail(ret_val):
@@ -409,7 +408,6 @@ class ArborApsConnector(BaseConnector):
         # Delete IP from blocklist
         ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_BLOCKLISTED_HOSTS,
                                                  action_result=action_result, method='delete', params=params)
-        self.debug_print('respone: {0}'.format(response))
 
         # Something went wrong
         if phantom.is_fail(ret_val):
@@ -466,7 +464,6 @@ class ArborApsConnector(BaseConnector):
         # Add IP in blocklist
         ret_val, response = self._make_rest_call(endpoint=ARBORAPS_TA_REST_BLOCKLISTED_HOSTS,
                                                  action_result=action_result, method='post', params=params)
-        self.debug_print('respone: {0}'.format(response))
 
         # Something went wrong
         if phantom.is_fail(ret_val):
@@ -509,7 +506,6 @@ class ArborApsConnector(BaseConnector):
 
         # Get allowlisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
-        self.debug_print('respone: {0}'.format(response))
 
         # Something went wrong
         if phantom.is_fail(ret_val):
@@ -562,7 +558,6 @@ class ArborApsConnector(BaseConnector):
 
         # Get allowlisted hosts
         ret_val, response = self._make_rest_call(endpoint=endpoint, action_result=action_result)
-        self.debug_print('respone: {0}'.format(response))
 
         # Something went wrong
         if phantom.is_fail(ret_val):
@@ -653,4 +648,4 @@ if __name__ == '__main__':
         r_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(r_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
