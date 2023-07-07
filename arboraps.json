@@ -11,7 +11,7 @@
     "min_phantom_version": "4.9.39220",
     "fips_compliant": true,
     "python_version": "3",
-    "publisher": "Splunk community",
+    "publisher": "Splunk Community",
     "license": "Copyright (c) 2017-2023 Splunk Inc.",
     "app_version": "3.0.0",
     "utctime_updated": "2022-01-07T21:26:23.000000Z",
