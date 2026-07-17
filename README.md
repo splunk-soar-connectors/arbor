@@ -1,7 +1,7 @@
 # Arbor APS
 
 Publisher: Splunk community <br>
-Connector Version: 3.0.1 <br>
+Connector Version: 3.0.2 <br>
 Product Vendor: Arbor Networks <br>
 Product Name: Arbor Networks APS <br>
 Minimum Product Version: 4.9.39220
