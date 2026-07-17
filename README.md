@@ -1,9 +1,9 @@
 # Arbor APS
 
-Publisher: Splunk community \
-Connector Version: 3.0.1 \
-Product Vendor: Arbor Networks \
-Product Name: Arbor Networks APS \
+Publisher: Splunk community <br>
+Connector Version: 3.0.1 <br>
+Product Vendor: Arbor Networks <br>
+Product Name: Arbor Networks APS <br>
 Minimum Product Version: 4.9.39220
 
 This app integrates with Arbor Networks APS to execute containment and corrective actions
@@ -21,18 +21,18 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
-[list ips](#action-list-ips) - List all IPs on the outbound Blocklist or Allowlist \
-[block ip](#action-block-ip) - Add an IP to the outbound Blocklist \
-[unblock ip](#action-unblock-ip) - Remove an IP from the outbound Blocklist \
-[allow ip](#action-allow-ip) - Add an IP to the outbound Allowlist \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
+[list ips](#action-list-ips) - List all IPs on the outbound Blocklist or Allowlist <br>
+[block ip](#action-block-ip) - Add an IP to the outbound Blocklist <br>
+[unblock ip](#action-unblock-ip) - Remove an IP from the outbound Blocklist <br>
+[allow ip](#action-allow-ip) - Add an IP to the outbound Allowlist <br>
 [unallow ip](#action-unallow-ip) - Remove an IP from the outbound Allowlist
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -47,7 +47,7 @@ No Output
 
 List all IPs on the outbound Blocklist or Allowlist
 
-Type: **investigate** \
+Type: **investigate** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -73,7 +73,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add an IP to the outbound Blocklist
 
-Type: **contain** \
+Type: **contain** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -100,7 +100,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Remove an IP from the outbound Blocklist
 
-Type: **correct** \
+Type: **correct** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -125,7 +125,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Add an IP to the outbound Allowlist
 
-Type: **contain** \
+Type: **contain** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -153,7 +153,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Remove an IP from the outbound Allowlist
 
-Type: **correct** \
+Type: **correct** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -178,7 +178,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
