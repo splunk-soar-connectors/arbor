@@ -1,6 +1,6 @@
 # File: arboraps_connector.py
 #
-# Copyright (c) 2017-2025 Splunk Inc.
+# Copyright (c) 2017-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class ArborApsConnector(BaseConnector):
         self._server_url = None
         self._username = None
         self._password = None
-        self._verify_server_cert = False
+        self._verify_server_cert = True
         self._session = None
 
         return
@@ -78,7 +78,7 @@ class ArborApsConnector(BaseConnector):
         self._server_url = config[ARBORAPS_TA_CONFIG_SERVER_URL].strip("/")
         self._username = config[ARBORAPS_TA_CONFIG_USERNAME]
         self._password = config[ARBORAPS_TA_CONFIG_PASSWORD]
-        self._verify_server_cert = config.get(ARBORAPS_TA_CONFIG_VERIFY_SSL, False)
+        self._verify_server_cert = config.get(ARBORAPS_TA_CONFIG_VERIFY_SSL, True)
 
         # Custom validation for IP address
         self.set_validator(ARBORAPS_TA_PARAM_IP, self._is_ip)

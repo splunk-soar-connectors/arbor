@@ -12,7 +12,7 @@
     "fips_compliant": true,
     "python_version": "3",
     "publisher": "Splunk community",
-    "license": "Copyright (c) 2017-2025 Splunk Inc.",
+    "license": "Copyright (c) 2017-2026 Splunk Inc.",
     "app_version": "3.0.1",
     "utctime_updated": "2025-04-11T20:19:41.625447Z",
     "package_name": "phantom_arboraps",
@@ -28,7 +28,7 @@
         "verify_server_cert": {
             "description": "Verify server certificate",
             "data_type": "boolean",
-            "default": false,
+            "default": true,
             "order": 1
         },
         "username": {
@@ -507,5 +507,11 @@
             },
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip39_dependencies": {
+        "wheel": []
+    },
+    "pip313_dependencies": {
+        "wheel": []
+    }
 }
