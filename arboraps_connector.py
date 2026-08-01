@@ -78,7 +78,14 @@ class ArborApsConnector(BaseConnector):
         self._server_url = config[ARBORAPS_TA_CONFIG_SERVER_URL].strip("/")
         self._username = config[ARBORAPS_TA_CONFIG_USERNAME]
         self._password = config[ARBORAPS_TA_CONFIG_PASSWORD]
-        self._verify_server_cert = config.get(ARBORAPS_TA_CONFIG_VERIFY_SSL, True)
+        requested_verify_server_cert = config.get(ARBORAPS_TA_CONFIG_VERIFY_SSL) is not False
+        allow_insecure_tls = config.get(ARBORAPS_TA_CONFIG_ALLOW_INSECURE_TLS) is True
+        self._verify_server_cert = requested_verify_server_cert or not allow_insecure_tls
+
+        if not requested_verify_server_cert and not allow_insecure_tls:
+            self.save_progress("Certificate verification was enabled because disabling it now requires the explicit insecure TLS opt-out")
+        elif not self._verify_server_cert:
+            self.save_progress("Warning: TLS certificate verification is explicitly disabled for this asset")
 
         # Custom validation for IP address
         self.set_validator(ARBORAPS_TA_PARAM_IP, self._is_ip)

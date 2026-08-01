@@ -16,6 +16,7 @@ ARBORAPS_TA_CONFIG_SERVER_URL = "server_url"
 ARBORAPS_TA_CONFIG_USERNAME = "username"
 ARBORAPS_TA_CONFIG_PASSWORD = "password"  # pragma: allowlist secret
 ARBORAPS_TA_CONFIG_VERIFY_SSL = "verify_server_cert"
+ARBORAPS_TA_CONFIG_ALLOW_INSECURE_TLS = "allow_insecure_tls"
 ARBORAPS_TA_CONNECTION_TEST_MSG = "Querying endpoint to verify the credentials provided"
 ARBORAPS_TA_REST_LOGIN = "/platform/login"
 ARBORAPS_TA_REST_LOGOUT = "/platform/logout"
