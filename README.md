@@ -15,7 +15,8 @@ This table lists the configuration variables required to operate Arbor APS. Thes
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
 **server_url** | required | string | Server URL (e.g. https://10.10.10.10) |
-**verify_server_cert** | optional | boolean | Verify server certificate |
+**verify_server_cert** | optional | boolean | Verify the Arbor APS server certificate |
+**allow_insecure_tls** | optional | boolean | Explicitly allow an insecure connection when server certificate verification is disabled |
 **username** | required | string | Username |
 **password** | required | password | Password |
 
